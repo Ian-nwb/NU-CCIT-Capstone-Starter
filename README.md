@@ -193,3 +193,26 @@ For a typical development session, open **four terminals**:
 
 ---
 
+## ☁️ Deployment — MongoDB Atlas
+
+For actual deployment, replace the local Docker MongoDB instance with **MongoDB Atlas** (free tier available).
+
+🔗 **https://www.mongodb.com/cloud/atlas/register**
+
+**Steps:**
+
+1. Create a free account and set up a **free M0 cluster**
+2. Under **Database Access**, create a database user with a username and password
+3. Under **Network Access**, add your server IP (or `0.0.0.0/0` to allow all — restrict this in production)
+4. Click **Connect → Drivers**, copy the connection string, and replace the placeholder credentials:
+   ```
+   mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<dbname>?retryWrites=true&w=majority
+   ```
+5. Paste it as your `MONGO_URI` in the backend `.env`:
+   ```
+   MONGO_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<dbname>?retryWrites=true&w=majority
+   ```
+
+> Once connected to Atlas, the `infra/` Docker setup is only needed for local development. Mongo Express is a local admin tool and is not used in production.
+
+---
