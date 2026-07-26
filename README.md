@@ -28,7 +28,7 @@ NU-CCIT-Capstone-Starter/
 | Frontend | React + Vite |
 | Mobile | Flutter (Dart) |
 | Database | MongoDB (local via Docker **or** MongoDB Atlas) |
-| DB Admin | Mongo Express (Docker only) / Atlas Data Explorer |
+| DB Admin | Mongo Express (Docker only) / Atlas Data Explorer / **MongoDB Compass (GUI, works with either)** |
 | Infrastructure | Docker + Docker Compose (optional) |
 | Novelty | _(team-defined — see below)_ |
 
@@ -59,20 +59,23 @@ Populated by the team based on their chosen emerging technology:
 
 | Novelty Type | Examples |
 |---|---|
-| **AI / ML** | Model training, inference pipeline, dataset processing |
-| **Blockchain** | Smart contracts, on-chain logic, wallet integration |
-| **Automation** | RPA scripts, workflow automation, scheduled jobs |
-| **Systems** | Go or Rust microservices, low-level optimization |
-| **Accessibility** | OCR, text-to-speech, voice commands, screen-reader support |
-| **IoT / Hardware** | Sensor integration, Raspberry Pi/Arduino/ESP32 nodes, real-time telemetry |
-| **Computer Vision** | Object/face detection, image classification, video analytics |
-| **NLP** | Chatbots, sentiment analysis, text summarization, language translation |
-| **AR / VR** | Immersive overlays, 3D visualization, spatial interaction |
-| **Predictive Analytics** | Forecasting models, anomaly detection, risk scoring |
-| **Real-time Systems** | Live dashboards, WebSocket/streaming data, push notifications |
-| **Offline-first** | Local-first sync, conflict resolution, works without internet |
-| **Gamification** | Points/badges/leaderboards, adaptive difficulty, engagement mechanics |
-| **Security / Crypto** | End-to-end encryption, biometric auth, anomaly-based fraud detection |
+| **AI / ML** | Model training, inference pipeline, dataset processing, recommendation engines, LLM-powered features (e.g. Gemini/OpenAI API integration), natural language search, document classification |
+| **Blockchain** | Smart contracts, on-chain logic, wallet integration, NFT-based certificates/records, decentralized identity, supply-chain traceability ledgers |
+| **Automation** | RPA scripts, workflow automation, scheduled jobs, auto-generated reports, email/SMS notification pipelines, CI/CD-triggered data tasks |
+| **Systems** | Go or Rust microservices, low-level optimization, custom caching layers, message queues (Kafka/RabbitMQ), load balancers, gRPC services |
+| **Accessibility** | OCR, text-to-speech, voice commands, screen-reader support, sign-language recognition, high-contrast/dyslexia-friendly UI modes, closed captioning |
+| **IoT / Hardware** | Sensor integration, Raspberry Pi/Arduino/ESP32 nodes, real-time telemetry, NFC/RFID access systems, smart home automation, environmental monitoring (temp/humidity/air quality), GPS tracking devices |
+| **Computer Vision** | Object/face detection, image classification, video analytics, license plate recognition, defect/quality inspection, pose estimation, barcode/QR scanning |
+| **NLP** | Chatbots, sentiment analysis, text summarization, language translation, resume/document parsing, spam/toxicity detection, voice-to-text transcription |
+| **AR / VR** | Immersive overlays, 3D visualization, spatial interaction, virtual try-on, AR wayfinding/indoor navigation, VR training simulations |
+| **Predictive Analytics** | Forecasting models, anomaly detection, risk scoring, demand/inventory prediction, churn prediction, predictive maintenance |
+| **Real-time Systems** | Live dashboards, WebSocket/streaming data, push notifications, live chat/collaboration, real-time location tracking, live auction/bidding systems |
+| **Offline-first** | Local-first sync, conflict resolution, works without internet, local caching with background sync, offline maps/data entry for field work |
+| **Gamification** | Points/badges/leaderboards, adaptive difficulty, engagement mechanics, streaks/daily challenges, redeemable rewards systems |
+| **Security / Crypto** | End-to-end encryption, biometric auth, anomaly-based fraud detection, two-factor authentication, intrusion detection (IDS/IPS), secure file sharing |
+| **Data Visualization** | Interactive charts/graphs, geospatial/heat maps, admin analytics dashboards, drill-down reporting tools |
+| **Multi-tenancy / SaaS** | Organization-based data isolation, subscription/billing integration, role-based workspace permissions, usage metering |
+| **Digital Twins** | Virtual replicas of physical assets/processes, simulation-based monitoring, what-if scenario testing |
 | **Other** | Anything not covered above — bring your own idea |
 
 ### `manuscript/`
@@ -101,6 +104,7 @@ Make sure the following are installed on your machine before proceeding:
 | Node.js (v18+) | https://nodejs.org | Always |
 | Docker Desktop | https://www.docker.com/products/docker-desktop | **Only if using local MongoDB** |
 | Flutter SDK | https://docs.flutter.dev/get-started/install | Mobile |
+| MongoDB Compass | https://www.mongodb.com/try/download/compass | **Optional — GUI for browsing/querying your DB (local or Atlas)** |
 
 ---
 
@@ -129,7 +133,7 @@ cd NU-CCIT-Capstone-Starter
    ```
 6. Paste it as `MONGO_URI` in `backend/.env` (see step 3 below)
 
-You can skip `infra/` entirely with this option — no Docker needed. Use Atlas's built-in Data Explorer instead of Mongo Express for admin access.
+You can skip `infra/` entirely with this option — no Docker needed. Use Atlas's built-in Data Explorer, or connect with **MongoDB Compass** using the same `mongodb+srv://` string from step 5 (Atlas also has a "Connect → Compass" shortcut that gives you a ready-made connection string).
 
 #### Option B — Local MongoDB via Docker
 
@@ -144,6 +148,8 @@ docker compose up -d
 | Mongo Express (admin UI) | http://localhost:8081 |
 
 > Make sure Docker Desktop is running before this step.
+
+You can also connect with **MongoDB Compass** using `mongodb://localhost:27018` for a richer GUI than Mongo Express (schema view, index management, aggregation pipeline builder, etc.).
 
 To stop the containers:
 ```bash
@@ -231,10 +237,22 @@ Refer to the `novelty/README.md` created by your team for setup instructions spe
 
 ---
 
+## 🧭 Using MongoDB Compass (optional, either setup)
+
+[MongoDB Compass](https://www.mongodb.com/try/download/compass) is a desktop GUI for exploring and querying your data outside of Mongo Express / Atlas Data Explorer.
+
+1. Download and install Compass
+2. Open Compass and paste your connection string:
+   - Local Docker: `mongodb://localhost:27018`
+   - Atlas: the `mongodb+srv://...` string from Atlas → **Connect → Compass**
+3. Click **Connect** to browse databases, collections, and documents, run queries, and build aggregation pipelines visually
+
+---
+
 ## ☁️ Deployment — MongoDB Atlas
 
 For actual deployment, use **MongoDB Atlas** regardless of which option you chose locally (free tier available). See [Database Setup — Option A](#option-a--mongodb-atlas-no-docker-required) above for account/cluster steps.
 
-> Once connected to Atlas, the `infra/` Docker setup is only needed for local development. Mongo Express is a local admin tool and is not used in production.
+> Once connected to Atlas, the `infra/` Docker setup is only needed for local development. Mongo Express is a local admin tool and is not used in production. MongoDB Compass works with both local and Atlas connections, so it's a good universal admin tool to keep around.
 
 ---
